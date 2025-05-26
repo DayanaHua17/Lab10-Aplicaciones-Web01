@@ -1,28 +1,8 @@
-// src/app/products/[id]/page.tsx
+export const dynamicParams = true; // fuerza compatibilidad
 
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  price: number;
-  category: string;
-}
-
-// Obligatorio para rutas dinámicas en modo App Router
-export async function generateStaticParams() {
-  const res = await fetch('https://fakestoreapi.com/products');
-  const products: Product[] = await res.json();
-
-  return products.map((product) => ({
-    id: product.id.toString(),
-  }));
-}
-
-// No usamos Props tipado explícito para evitar conflicto de tipo
-export default async function ProductDetail({ params }: { params: { id: string } }) {
+export default async function ProductDetail({ params }: any) {
   const res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
-  const product: Product = await res.json();
+  const product = await res.json();
 
   return (
     <div className="p-8">
