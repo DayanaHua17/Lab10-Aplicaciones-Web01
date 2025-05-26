@@ -9,13 +9,7 @@ interface Product {
   category: string;
 }
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
-
-// Esta función es esencial para que Next.js genere rutas estáticas
+// Obligatorio para rutas dinámicas en modo App Router
 export async function generateStaticParams() {
   const res = await fetch('https://fakestoreapi.com/products');
   const products: Product[] = await res.json();
@@ -25,7 +19,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ProductDetail({ params }: Props) {
+// No usamos Props tipado explícito para evitar conflicto de tipo
+export default async function ProductDetail({ params }: { params: { id: string } }) {
   const res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
   const product: Product = await res.json();
 
